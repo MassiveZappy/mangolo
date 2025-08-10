@@ -1,0 +1,84 @@
+/*
+MOCKUP MMangolo Project
+
+Supported Base MongoDB Datatypes:
+Integer
+-Can store any whole number from -inf to +inf
+Double
+-Can store any floating-point number from -inf to +inf
+Decimal
+-Can store any decimal number from -inf to +inf
+String
+- Array of characters.
+Boolean
+- true or false
+Null & Undefined (Different)
+- null or undefined
+Binary Data
+- Can store any binary data, no special rules
+Date (aka Time)
+- Can store any date and time information
+MinKey & MaxKey (aka -Inf, Inf)
+- Simple & adapts dependent on target backend language
+Object (as #object_name to reference user-defined objects),
+Array (Array<#object_name> or Array<datatype>)
+Regular Expression (aka Regex)
+Snippet (JavaScript code)
+DBID (Automaticaly Generated ID from MongoDB is overriden by this)
+
+
+TODO!! DON'T IMPLEMENT YET UNDER ANY CONDITION WITHOUT APPROVAL, PLANNED FEATURES
+Ranges on numeric datatypes are denoted by n<x<m with x as the datatype Ex: (0<Integer<100)
+Minimum/Max Elements can be defined on array-like objects
+Custom Mongolo Datatypes (UUID)
+Multiple Slice files
+Do Not Duplicate in Array-Like Objects
+Size-Defined variables (in bytes)
+Aliases galore (object names)
+Global Variables (front * backend)
+must be TRUE/FALSE tags, otherwise throw error
+Timestamp (Need to define special Rules)
+
+Will never be supported (or extremely unlikely):
+Symbol Datatype
+JavaScript with Scope
+*/
+config
+ targetLanguages
+
+
+organisation
+{
+  name: string
+  address: string
+  phone: string
+  email: string
+  createdAt: Timestamp
+  updatedAt: Date
+  roles: array<#role>
+  users: array<#user>
+}
+
+role
+{
+  name : string
+  permissons : array<#permission>
+}
+
+permission
+{
+  name: string
+  description: string
+}
+
+user
+{
+  name: string
+  email: string
+  age: number
+  address: string
+  phone: string
+  createdAt: Date
+  updatedAt: Date
+  organisations: array<#organisation>
+}

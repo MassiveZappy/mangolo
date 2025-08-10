@@ -1,0 +1,85 @@
+[object]
+# Basic organization information
+name: string required min(3) max(100)
+slug: string required unique pattern("^[a-z0-9-]+$") min(3) max(50)
+description: string optional max(1000)
+website: string optional url max(200)
+logo: file optional max_size(2MB) types("image/jpeg", "image/png", "image/svg+xml")
+
+# Contact information
+email: string required email
+phone: string optional pattern("^\+?[0-9]{10,15}$")
+address: object {
+    street: string optional max(100),
+    city: string optional max(50),
+    state: string optional max(50),
+    zip: string optional max(20),
+    country: string optional max(50)
+}
+
+# Business details
+industry: string optional max(50)
+size: enum("small", "medium", "large", "enterprise") default("small")
+founded_year: number optional min(1800) max(2100)
+tax_id: string optional max(50) encrypted
+public: boolean default(false)
+
+# System fields
+status: enum("active", "inactive", "suspended") default("active")
+verified: boolean default(false)
+created_at: timestamp auto_now
+updated_at: timestamp auto_update
+
+# Relations
+members: relation<user> (
+    many_to_many
+    through("organization_members")
+    with_fields(["role", "joined_at"])
+)
+owner: relation<user> (
+    foreign_key("owner_id")
+    required
+)
+parent: relation<organization> (
+    foreign_key("parent_id")
+    optional
+    on_delete("set_null")
+)
+subsidiaries: relation<organization> (
+    back_reference("parent")
+)
+locations: array<location> (
+    no_duplicates
+    max_items(50)
+    max_size(2MB)
+)
+
+[indexes]
+name_idx: { fields: ["name"], type: "fulltext" }
+slug_idx: { fields: ["slug"], type: "unique" }
+industry_size_idx: { fields: ["industry", "size"], type: "btree" }
+created_at_idx: { fields: ["created_at"], type: "btree" }
+
+[permissions]
+create: ["admin", "api"]
+read: ["public", "member", "admin"]
+update: ["owner", "admin"]
+delete: ["admin"]
+
+[validations]
+rule website_or_email {
+    validate: "website || email"
+    message: "Either website or email must be provided"
+}
+
+rule size_employee_count {
+    condition: "size == 'enterprise'"
+    validate: "members.count >= 100"
+    message: "Enterprise organizations should have at least 100 members"
+}
+
+rule valid_subsidiary {
+    condition: "parent != null"
+    validate: "parent.status == 'active'"
+    message: "Parent organization must be active"
+}

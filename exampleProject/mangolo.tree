@@ -1,0 +1,5 @@
+# Defined by:
+# database outline (mango) location
+# database format
+main/main.mango json
+#secondary/purchaced.mango json
