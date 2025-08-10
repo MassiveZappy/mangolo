@@ -3,7 +3,9 @@ Mangolo Language
 """
 import argparse
 import os
-import mongoloInterpreterExceptions
+import mongoloErrors
+import mongoloFileReaders
+import knive
 
 def identifyDataType(value):
     if value.startswith('"') and value.endswith('"'):

@@ -1,80 +1,16 @@
-# Mangolo Project Configuration
-# This is the primary configuration file that defines the project settings
+# DB definition
+[DatabaseDefinition]
+DBName = "exampleProjectDB"
+DBType = "json"
 
-[project]
-name = "namespace"
-version = "1.0.0"
-description = "Example Mangolo project for user management"
-author = "Your Name"
-license = "MIT"
+[JSONSettings] # only used if DBType is "json"
+MaximumBytes = 1000000
 
-[environment]
-production = false
-debug = true
-log_level = "debug"  # Options: debug, info, warn, error
+[SQLiteSettings] # only used if DBType is "sqlite"
+FilePath = "exampleProjectDB.sqlite"
 
-[server]
-host = "localhost"
-port = 8080
-base_path = "/api"
-cors_enabled = true
-rate_limit = 100  # Requests per minute per IP
+[SQLSettings] # only used if DBType is "sql"
+ConnectionString = "Server=localhost;Database=exampleProjectDB;User Id=your_username;Password=your_password;"
 
-[security]
-jwt_secret = "${ENV:JWT_SECRET}"
-token_expiry = 3600  # Seconds
-max_login_attempts = 5
-password_policy = "strong"  # Options: weak, medium, strong
-allow_registration = true
-
-[frontend]
-libs = ["PHP"]
-assets_dir = "./assets"
-templates_dir = "./templates"
-cache_enabled = true
-minify = false
-
-[backend]
-libs = ["Python"]
-extensions = ["auth", "logging", "caching"]
-timeout = 30  # Seconds
-
-[database]
-type = "json"  # Options: json, sqlite, mysql, postgresql, mongodb
-path = "./data"
-backup_frequency = "daily"  # Options: hourly, daily, weekly
-max_connections = 10
-pool_size = 5
-
-[storage]
-uploads_dir = "./uploads"
-max_file_size = "10MB"
-allowed_types = ["image/jpeg", "image/png", "application/pdf"]
-storage_limit = "1GB"
-
-[email]
-provider = "smtp"
-from_address = "noreply@example.com"
-templates_dir = "./email_templates"
-send_welcome_email = true
-
-[cache]
-enabled = true
-driver = "memory"  # Options: memory, redis, file
-ttl = 3600  # Seconds
-
-[logging]
-level = "info"
-file = "./logs/app.log"
-rotate = true
-max_size = "10MB"
-max_files = 5
-
-[tasks]
-queue_driver = "local"  # Options: local, redis, sqs
-max_retries = 3
-timeout = 60  # Seconds
-
-[advanced]
-custom_middlewares = ["rate_limiter", "request_logger"]
-plugins = []
+[MongoDBSettings] # only used if DBType is "mongodb"
+ConnectionString = "mongodb://localhost:27017/exampleProjectDB"
